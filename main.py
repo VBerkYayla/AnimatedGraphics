@@ -1,38 +1,30 @@
 import numpy as np
-from matplotlib.animaton import FuncAnimation
-from IPython.display import display
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
-Figure = plt.figure()
+# Figure ve line oluşturma
+fig, ax = plt.subplots()
+line, = ax.plot([], [], lw=2)
 
-lines_plotted = plt.plot([]) #creating a plot
+# Eksen limitleri
+ax.set_xlim(0, 2 * np.pi)
+ax.set_ylim(-1.1, 1.1)
 
-lnie_plotted = lines_plotted[0]
+# X değerleri
+x = np.linspace(0, 2 * np.pi, 100)
 
-#we put the limits on x axis since. It is a trigonometry function so it only takes (0,2pi)
+# Başlangıç fonksiyonu
+def init():
+    line.set_data([], [])
+    return line,
 
-plt.xlim(0,2*np.pi)
-plt.ylim(-1.1,1.1)
+# Frame güncelleme fonksiyonu
+def update(frame):
+    y = np.cos(x + 2 * np.pi * frame / 100)
+    line.set_data(x, y)
+    return line,
 
-#we put the limits on y since it is a cosine function
+# Animasyonu başlat
+ani = FuncAnimation(fig, update, init_func=init, frames=100, interval=25, blit=True)
 
-x = np.linspace(0,2*np.pi,100) # initialising x from 0 to 2pi
-
-y = 0 #initially
-
-def AnimationFunction(frame):
-
-    y = np.cos(x+2*np.pi*frame/100) # we take the y values within a certain range.
-
-    lines_plotted.set_data((x,y)) # line is set with a new values of x and y
-
-
-#We call the FuncAnimation and we are giving an interval of 25 miliseconcds
-anim_created = FuncAnimation(Figure, AnimationFunction, frames = 100, interval = 25)
-
-#We convert it to an HTML file so that the animation can work.
-video = anim_created.to_html5_video()
-html = display.HTML(video)
-display.display(html)
-plt.close()
-
+plt.show()
