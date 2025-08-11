@@ -2,29 +2,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-# Figure ve line oluşturma
+# Create figures and lines
 fig, ax = plt.subplots()
 line, = ax.plot([], [], lw=2)
 
-# Eksen limitleri
+# We take some limits on the x and y axis.
 ax.set_xlim(0, 2 * np.pi)
 ax.set_ylim(-1.1, 1.1)
 
-# X değerleri
+# It is x values
 x = np.linspace(0, 2 * np.pi, 100)
 
-# Başlangıç fonksiyonu
+# İnitial value
 def init():
     line.set_data([], [])
     return line,
 
-# Frame güncelleme fonksiyonu
+# We update the frame
 def update(frame):
     y = np.cos(x + 2 * np.pi * frame / 100)
     line.set_data(x, y)
     return line,
 
-# Animasyonu başlat
+# Now, we start the animation so we see the animated graphics.
 ani = FuncAnimation(fig, update, init_func=init, frames=100, interval=25, blit=True)
 
 plt.show()
